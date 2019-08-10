@@ -1,33 +1,31 @@
 {
-  "name": "starter-react-mobx-css-modules",
+  "name": "timeseries-explorer",
   "version": "1.0.0",
   "main": "src/index.jsx",
-  "repository": "https://github.com/gamliela/starter-react-mobx-css-modules.git",
+  "repository": "https://github.com/gamliela/timeseries-explorer.git",
   "author": "Alon Gamliel <alon@gamliela.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "mobx": "^5.0.4",
-    "mobx-react": "^5.2.5",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2"
+    "react": "16.9.0",
+    "react-dom": "16.9.0"
   },
   "devDependencies": {
-    "@types/react": "^16.4.11",
-    "@types/react-dom": "^16.0.7",
-    "css-loader": "^1.0.0",
-    "html-webpack-plugin": "^3.2.0",
-    "node-sass": "^4.9.3",
-    "sass-loader": "^7.1.0",
-    "style-loader": "^0.22.1",
-    "ts-loader": "^4.5.0",
-    "typescript": "^3.0.1",
-    "url-loader": "^1.1.1",
-    "webpack": "^4.17.1",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5"
+    "@types/react": "16.9.1",
+    "@types/react-dom": "16.8.5",
+    "css-loader": "3.2.0",
+    "html-webpack-plugin": "3.2.0",
+    "node-sass": "4.12.0",
+    "sass-loader": "7.2.0",
+    "style-loader": "1.0.0",
+    "ts-loader": "6.0.4",
+    "typescript": "3.5.3",
+    "url-loader": "2.1.0",
+    "webpack": "4.39.1",
+    "webpack-cli": "3.3.6",
+    "webpack-dev-server": "3.8.0"
   },
   "scripts": {
     "build": "webpack --config config/webpack.config.js",
-    "dev-server": "webpack-dev-server --config config/webpack.config.js --inline --open"
+    "start": "webpack-dev-server --config config/webpack.config.js --inline"
   }
 }

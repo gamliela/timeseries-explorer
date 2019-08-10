@@ -28,9 +28,10 @@ const config = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
-              importLoaders: 1,   // make sure sass-loader is used on imported assets
-              localIdentName: '[local]---[hash:base64:5]'
+              modules: {
+                localIdentName: '[local]---[hash:base64:5]'
+              },
+              importLoaders: 1   // make sure sass-loader is used on imported assets
             }
           },
           'sass-loader'
