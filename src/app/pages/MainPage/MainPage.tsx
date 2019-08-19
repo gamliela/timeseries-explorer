@@ -1,5 +1,6 @@
 import * as React from "react";
 import style from "./style.scss";
+import "../../stream/stream.ts";
 
 function MainPage() {
   return (
