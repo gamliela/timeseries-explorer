@@ -4,7 +4,7 @@ socket.onopen = function () {
   console.log("Socket is open");
 };
 
-let ackSender : number;
+let ackSender: number;
 
 socket.onmessage = function (e) {
   const json = JSON.parse(e.data);
