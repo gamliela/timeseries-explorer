@@ -22,7 +22,7 @@ function Chart({option, isLoading}: ChartProps) {
     // based on prepared DOM, initialize echarts instance
     chart.current = echarts.init(container.current);
 
-    return function cleanup(): void {
+    return function cleanup() {
       if (chart.current) {
         echarts.dispose(chart.current);
       }
