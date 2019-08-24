@@ -1,8 +1,9 @@
 import * as React from "react";
 import * as echarts from 'echarts';
 import EChartOption = echarts.EChartOption;
-import style from "./style.scss";
+// import style from "./style.scss";
 import Chart from "../../echart/Chart";
+import SocketBuffer from "../../socket/SocketBuffer";
 
 const option: EChartOption = {
   title: {
@@ -26,9 +27,9 @@ const option: EChartOption = {
 function MainPage() {
   return (
     <div>
-      <h1 className={style.header}>
-        <Chart option={option} isLoading={true}/>
-      </h1>
+      <SocketBuffer url="ws://localhost:8081/ws" bufferSize={5}/>
+      <hr/>
+      <Chart option={option} isLoading={true}/>
     </div>
   );
 }

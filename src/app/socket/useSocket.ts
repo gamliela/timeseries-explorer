@@ -1,10 +1,17 @@
 import {useDebugValue, useEffect, useRef, useState} from "react";
 
-enum SocketStatus { Init, Connecting, WaitingForData, WaitingForAck, Closed, Error}
+enum SocketStatus {
+  Init = "Init",
+  Connecting = "Connecting",
+  WaitingForData = "Waiting for Data",
+  WaitingForAck = "Waiting for Ack",
+  Closed = "Closed",
+  Error = "Error"
+}
 
-function useSocket(url: string) {
+function useSocket<T>(url: string) {
   const [status, setStatus] = useState(SocketStatus.Init);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<T>();
   const [error, setError] = useState<Event | null>(null);
   const socket = useRef<WebSocket>();
 
@@ -56,4 +63,5 @@ function useSocket(url: string) {
   }
 }
 
+export {SocketStatus};
 export default useSocket;
