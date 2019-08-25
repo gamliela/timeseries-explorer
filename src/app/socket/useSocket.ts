@@ -1,7 +1,7 @@
 import {useDebugValue, useEffect, useRef, useState} from "react";
 import {SocketState, SocketStatus} from "./types";
 
-function useSocket<T>(url: string): SocketState<T> {
+function useSocket<T>(url: string, onMessage?: (data: T) => void): SocketState<T> {
   const [status, setStatus] = useState(SocketStatus.Init);
   const [data, setData] = useState<T>();
   const [error, setError] = useState<Event>();
@@ -19,8 +19,12 @@ function useSocket<T>(url: string): SocketState<T> {
 
     socket.current.onmessage = function (e: MessageEvent) {
       try {
-        setData(JSON.parse(e.data));
+        const newData = JSON.parse(e.data) as T;
+        setData(newData);
         setStatus(SocketStatus.WaitingForAck);
+        if (onMessage) {
+          onMessage(newData);
+        }
       } catch (e) {
         setStatus(SocketStatus.Error);
         setError(e);
@@ -41,7 +45,7 @@ function useSocket<T>(url: string): SocketState<T> {
         socket.current.close();
       }
     }
-  }, [url]);
+  }, [url, onMessage]);
 
   function sendAck() {
     if ((status == SocketStatus.WaitingForAck) && socket.current) {
