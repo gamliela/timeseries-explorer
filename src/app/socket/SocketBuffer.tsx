@@ -16,7 +16,7 @@ function SocketBuffer({url, bufferSize}: StreamLoggerProps) {
         Status: {status}
       </div>
       <div>
-        {buffer.map((data, i) => (<div key={i}>{JSON.stringify(data)}</div>))}
+        {buffer && buffer.map((data, i) => (<div key={i}>{JSON.stringify(data)}</div>))}
       </div>
     </div>
   );

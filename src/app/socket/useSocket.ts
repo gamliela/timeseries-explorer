@@ -1,18 +1,10 @@
 import {useDebugValue, useEffect, useRef, useState} from "react";
+import {SocketState, SocketStatus} from "./types";
 
-enum SocketStatus {
-  Init = "Init",
-  Connecting = "Connecting",
-  WaitingForData = "Waiting for Data",
-  WaitingForAck = "Waiting for Ack",
-  Closed = "Closed",
-  Error = "Error"
-}
-
-function useSocket<T>(url: string) {
+function useSocket<T>(url: string): SocketState<T> {
   const [status, setStatus] = useState(SocketStatus.Init);
   const [data, setData] = useState<T>();
-  const [error, setError] = useState<Event | null>(null);
+  const [error, setError] = useState<Event>();
   const socket = useRef<WebSocket>();
 
   useDebugValue(status);

@@ -15,7 +15,8 @@ module.exports = {
   rules: {
     "@typescript-eslint/explicit-function-return-type": "off",
     "react-hooks/rules-of-hooks": "error", // checks rules of Hooks
-    "react-hooks/exhaustive-deps": "warn" // checks effect dependencies
+    "react-hooks/exhaustive-deps": "warn", // checks effect dependencies
+    'no-undef': 'off',  // not needed for TS projects. https://github.com/typescript-eslint/typescript-eslint/issues/662
   },
   settings: {
     react: {

@@ -1,7 +1,8 @@
 import useSocket, {SocketStatus} from "./useSocket";
 import {useState} from "react";
+import {SocketBufferState} from "./types";
 
-function useStream<T>(url: string, bufferSize = 200) {
+function useStream<T>(url: string, bufferSize = 200): SocketBufferState<T> {
   const [buffer, setBuffer] = useState<T[]>([]);
   const {status, data, error, sendAck} = useSocket<T>(url);
 
