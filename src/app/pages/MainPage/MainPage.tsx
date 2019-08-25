@@ -4,6 +4,8 @@ import EChartOption = echarts.EChartOption;
 // import style from "./style.scss";
 import Chart from "../../echart/Chart";
 import SocketBuffer from "../../socket/SocketBuffer";
+import useSocketBuffer from "../../socket/useSocketBuffer";
+import {SocketBufferContext} from "../../socket/types";
 
 const option: EChartOption = {
   title: {
@@ -25,12 +27,14 @@ const option: EChartOption = {
 };
 
 function MainPage() {
+  const socketBufferState = useSocketBuffer("ws://localhost:8081/ws");
+
   return (
-    <div>
-      <SocketBuffer url="ws://localhost:8081/ws" bufferSize={5}/>
+    <SocketBufferContext.Provider value={socketBufferState}>
+      <SocketBuffer logSize={5}/>
       <hr/>
       <Chart option={option} isLoading={true}/>
-    </div>
+    </SocketBufferContext.Provider>
   );
 }
 

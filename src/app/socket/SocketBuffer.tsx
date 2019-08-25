@@ -1,22 +1,23 @@
 import * as React from "react";
-import useSocketBuffer from "./useSocketBuffer";
+import {useContext} from "react";
+import {SocketBufferContext, SocketBufferState} from "./types";
 
 interface StreamLoggerProps {
-  url: string;
-  bufferSize: number;
+  logSize: number;
 }
 
-function SocketBuffer({url, bufferSize}: StreamLoggerProps) {
-  const {status, buffer, sendAck} = useSocketBuffer(url, bufferSize);
+function SocketBuffer<T>({logSize}: StreamLoggerProps) {
+  const {status, buffer, sendAck} = useContext<SocketBufferState<T>>(SocketBufferContext)
 
   return (
     <div>
       <div>
         <button type="button" onClick={sendAck}>Ack</button>
+        &nbsp;
         Status: {status}
       </div>
       <div>
-        {buffer && buffer.map((data, i) => (<div key={i}>{JSON.stringify(data)}</div>))}
+        {buffer && buffer.slice(-logSize).map((data, i) => (<div key={i}>{JSON.stringify(data)}</div>))}
       </div>
     </div>
   );
