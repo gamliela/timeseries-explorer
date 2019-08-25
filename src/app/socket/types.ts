@@ -17,7 +17,7 @@ interface SocketState<T> {
 }
 
 interface SocketBufferState<T> extends SocketState<T> {
-  buffer?: T[];
+  buffer: T[];
 }
 
 const SocketBufferContext = React.createContext({

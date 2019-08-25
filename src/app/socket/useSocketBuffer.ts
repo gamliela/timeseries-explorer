@@ -3,17 +3,17 @@ import {useState} from "react";
 import {SocketBufferState} from "./types";
 
 function useSocketBuffer<T>(url: string, bufferSize = 200): SocketBufferState<T> {
-  const [buffer, setBuffer] = useState<T[]>([]);
+  const [prevData, setPrevData] = useState<T[]>([]);
   const {status, data, error, sendAck} = useSocket<T>(url);
 
   function sendBufferAck() {
     if ((status == SocketStatus.WaitingForAck) && (data !== undefined)) {
-      setBuffer([...buffer.slice(-bufferSize + 1), data]);
+      setPrevData([...prevData.slice(-bufferSize + 1), data]);
       sendAck();
     }
   }
 
-  return {status, data, buffer, error, sendAck: sendBufferAck}
+  return {status, data, buffer: data ? [...prevData, data] : prevData, error, sendAck: sendBufferAck}
 }
 
 export default useSocketBuffer;

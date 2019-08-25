@@ -46,6 +46,7 @@ function useSocket<T>(url: string): SocketState<T> {
   function sendAck() {
     if ((status == SocketStatus.WaitingForAck) && socket.current) {
       socket.current.send("true");
+      setData(undefined);
       setStatus(SocketStatus.WaitingForData);
     }
   }
