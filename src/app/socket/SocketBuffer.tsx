@@ -7,7 +7,7 @@ interface StreamLoggerProps {
 }
 
 function SocketBuffer<T>({logSize}: StreamLoggerProps) {
-  const {status, buffer, sendAck} = useContext<SocketBufferState<T>>(SocketBufferContext)
+  const {status, buffer, sendAck, requestRestart} = useContext<SocketBufferState<T>>(SocketBufferContext)
 
   return (
     <div>
@@ -15,6 +15,8 @@ function SocketBuffer<T>({logSize}: StreamLoggerProps) {
         <button type="button" onClick={sendAck}>Ack</button>
         &nbsp;
         Status: {status}
+        &nbsp;
+        <button type="button" onClick={requestRestart}>Restart</button>
       </div>
       <div>
         {buffer && buffer.slice(-logSize).map((data, i) => (<div key={i}>{JSON.stringify(data)}</div>))}

@@ -1,10 +1,19 @@
-import {useDebugValue, useEffect, useRef, useState} from "react";
+import {useCallback, useDebugValue, useEffect, useRef, useState} from "react";
 import {SocketState, SocketStatus} from "./types";
+
+function useForceUpdate(): [boolean, () => void] {
+  const [updated, update] = useState<boolean>(false);
+  const forceUpdate: () => void = useCallback(() => {
+    update(state => !state);
+  }, []);
+  return [updated, forceUpdate];
+}
 
 function useSocket<T>(url: string, onMessage?: (data: T) => void): SocketState<T> {
   const [status, setStatus] = useState(SocketStatus.Init);
   const [data, setData] = useState<T>();
   const [error, setError] = useState<Event>();
+  const [restartRequested, requestRestart] = useForceUpdate();
   const socket = useRef<WebSocket>();
 
   useDebugValue(status);
@@ -45,7 +54,7 @@ function useSocket<T>(url: string, onMessage?: (data: T) => void): SocketState<T
         socket.current.close();
       }
     }
-  }, [url, onMessage]);
+  }, [url, onMessage, restartRequested]);
 
   function sendAck() {
     if ((status == SocketStatus.WaitingForAck) && socket.current) {
@@ -56,7 +65,11 @@ function useSocket<T>(url: string, onMessage?: (data: T) => void): SocketState<T
   }
 
   return {
-    status, data, error, sendAck
+    status,
+    data,
+    error,
+    sendAck,
+    requestRestart
   }
 }
 
