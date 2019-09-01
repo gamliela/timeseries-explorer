@@ -9,7 +9,9 @@ function useForceUpdate(): [boolean, () => void] {
   return [updated, forceUpdate];
 }
 
-function useSocket<T>(url: string, onMessage?: (data: T) => void): SocketState<T> {
+function useSocket<T>(url: string,
+                      onOpen?: () => void,
+                      onMessage?: (data: T) => void): SocketState<T> {
   const [status, setStatus] = useState(SocketStatus.Init);
   const [data, setData] = useState<T>();
   const [error, setError] = useState<Event>();
@@ -24,6 +26,7 @@ function useSocket<T>(url: string, onMessage?: (data: T) => void): SocketState<T
 
     socket.current.onopen = function () {
       setStatus(SocketStatus.WaitingForData);
+      onOpen && onOpen();
     };
 
     socket.current.onmessage = function (e: MessageEvent) {
@@ -31,12 +34,11 @@ function useSocket<T>(url: string, onMessage?: (data: T) => void): SocketState<T
         const newData = JSON.parse(e.data) as T;
         setData(newData);
         setStatus(SocketStatus.WaitingForAck);
-        if (onMessage) {
-          onMessage(newData);
-        }
+        onMessage && onMessage(newData);
       } catch (e) {
         setStatus(SocketStatus.Error);
         setError(e);
+        socket.current && socket.current.close()
       }
     };
 
@@ -50,11 +52,9 @@ function useSocket<T>(url: string, onMessage?: (data: T) => void): SocketState<T
     };
 
     return function cleanup() {
-      if (socket.current) {
-        socket.current.close();
-      }
+      socket.current && socket.current.close();
     }
-  }, [url, onMessage, restartRequested]);
+  }, [url, onOpen, onMessage, restartRequested]);
 
   function sendAck() {
     if ((status == SocketStatus.WaitingForAck) && socket.current) {
