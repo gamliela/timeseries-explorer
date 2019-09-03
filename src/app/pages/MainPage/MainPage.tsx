@@ -4,7 +4,8 @@ import EChartOption = echarts.EChartOption;
 import Chart from "../../echart/Chart";
 import SocketBuffer from "../../socket/SocketBuffer";
 import useSocketBuffer from "../../socket/useSocketBuffer";
-import {SocketBufferContext} from "../../socket/types";
+import {ServerFrame} from "../../types";
+import {SocketBufferContext} from "../../context";
 
 const option: EChartOption = {
   // title: {
@@ -75,10 +76,6 @@ interface ChartState {
   error?: string;
 }
 
-type HeaderFrame = string[];
-type DataFrame = { Time: string; Data: number[] }
-type Frame = HeaderFrame | DataFrame;
-
 // function useHeader(sbf: SocketBufferState): string[] {
 //   const [header, setHeader] = useState<string[]>();
 //   const bufferHasHeader = sbf.buffer.length > 0;
@@ -91,7 +88,7 @@ type Frame = HeaderFrame | DataFrame;
 // }
 
 function MainPage() {
-  const socketBufferState = useSocketBuffer<Frame>("ws://localhost:8081/ws");
+  const socketBufferState = useSocketBuffer<ServerFrame>("ws://localhost:8081/ws");
 
   return (
     <SocketBufferContext.Provider value={socketBufferState}>

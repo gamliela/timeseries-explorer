@@ -1,14 +1,14 @@
 import * as React from "react";
 import {useContext} from "react";
-import {SocketBufferContext, SocketBufferState} from "./types";
 import style from "./style.scss";
+import {SocketBufferContext} from "../context";
 
 interface StreamLoggerProps {
   logSize: number;
 }
 
-function SocketBuffer<T>({logSize}: StreamLoggerProps) {
-  const {status, header, buffer, sendAck, requestRestart} = useContext<SocketBufferState<T>>(SocketBufferContext)
+function SocketBuffer({logSize}: StreamLoggerProps) {
+  const {status, header, buffer, sendAck, requestRestart} = useContext(SocketBufferContext)
 
   return (
     <div className={style.SocketBuffer}>
@@ -21,7 +21,7 @@ function SocketBuffer<T>({logSize}: StreamLoggerProps) {
       </div>
       <div>
         <div className={style.header}>{JSON.stringify(header)}</div>
-        {buffer && buffer.slice(-logSize).map((data, i) => (<div key={i}>{JSON.stringify(data)}</div>))}
+        {buffer.slice(-logSize).map((data, i) => (<div key={i}>{JSON.stringify(data)}</div>))}
       </div>
     </div>
   );

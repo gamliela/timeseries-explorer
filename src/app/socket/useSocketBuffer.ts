@@ -12,7 +12,7 @@ function useSocketBuffer<T>(url: string, bufferSize = 200): SocketBufferState<T>
   const onMessage = useCallback(function onMessage(data) {
     setBufferState(bufferState => {
       if (bufferState.header) {
-        return {header: bufferState.header, buffer: [...(bufferState.buffer || []).slice(-bufferSize + 1), data]};
+        return {header: bufferState.header, buffer: [...bufferState.buffer.slice(-bufferSize + 1), data]};
       } else {
         return {header: data as T, buffer: []};
       }
