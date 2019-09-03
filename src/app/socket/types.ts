@@ -17,9 +17,12 @@ interface SocketState<T> {
   requestRestart: () => void;
 }
 
-interface SocketBufferState<T> extends SocketState<T> {
+interface BufferState<T> {
+  header?: T;
   buffer?: T[];
 }
+
+type SocketBufferState<T> = SocketState<T> & BufferState<T>
 
 function unexpectedAction() {
   console.error(`No context is provided. Unexpected action was called.`)
@@ -31,4 +34,4 @@ const SocketBufferContext = React.createContext({
   requestRestart: unexpectedAction
 })
 
-export {SocketStatus, SocketState, SocketBufferState, SocketBufferContext}
+export {SocketStatus, SocketState, BufferState, SocketBufferState, SocketBufferContext}
