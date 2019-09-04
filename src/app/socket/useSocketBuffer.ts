@@ -21,7 +21,12 @@ function useSocketBuffer<T, U>(url: string, bufferSize = 200): SocketBufferState
 
   const socketState = useSocket<T>(url, onOpen, onMessage);
 
-  return {...socketState, ...bufferState}
+  const requestRestart = useCallback(function requestRestart() {
+    setBufferState({buffer: []});
+    socketState.requestRestart();
+  }, [socketState])
+
+  return {...socketState, ...bufferState, requestRestart}
 }
 
 export default useSocketBuffer;
