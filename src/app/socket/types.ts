@@ -9,17 +9,17 @@ enum SocketStatus {
 
 interface SocketState<T> {
   status: SocketStatus;
-  data?: T;
+  frame?: T;
   error?: Event;
   sendAck: () => void;
   requestRestart: () => void;
 }
 
-interface BufferState<T> {
+interface BufferState<T, U> {
   header?: T;
-  buffer: T[];
+  buffer: U[];
 }
 
-type SocketBufferState<T> = SocketState<T> & BufferState<T>
+type SocketBufferState<T, U> = SocketState<T | U> & BufferState<T, U>
 
 export {SocketStatus, SocketState, BufferState, SocketBufferState}

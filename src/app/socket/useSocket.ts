@@ -11,9 +11,9 @@ function useForceUpdate(): [boolean, () => void] {
 
 function useSocket<T>(url: string,
                       onOpen?: () => void,
-                      onMessage?: (data: T) => void): SocketState<T> {
+                      onMessage?: (frame: T) => void): SocketState<T> {
   const [status, setStatus] = useState(SocketStatus.Init);
-  const [data, setData] = useState<T>();
+  const [frame, setFrame] = useState<T>();
   const [error, setError] = useState<Event>();
   const [restartRequested, requestRestart] = useForceUpdate();
   const socket = useRef<WebSocket>();
@@ -31,10 +31,10 @@ function useSocket<T>(url: string,
 
     socket.current.onmessage = function (e: MessageEvent) {
       try {
-        const newData = JSON.parse(e.data) as T;
-        setData(newData);
+        const newFrame = JSON.parse(e.data) as T;
+        setFrame(newFrame);
         setStatus(SocketStatus.WaitingForAck);
-        onMessage && onMessage(newData);
+        onMessage && onMessage(newFrame);
       } catch (e) {
         setStatus(SocketStatus.Error);
         setError(e);
@@ -59,14 +59,14 @@ function useSocket<T>(url: string,
   function sendAck() {
     if ((status == SocketStatus.WaitingForAck) && socket.current) {
       socket.current.send("true");
-      setData(undefined);
+      setFrame(undefined);
       setStatus(SocketStatus.WaitingForData);
     }
   }
 
   return {
     status,
-    data,
+    frame,
     error,
     sendAck,
     requestRestart

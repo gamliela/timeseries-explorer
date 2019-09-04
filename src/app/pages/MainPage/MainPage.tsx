@@ -4,7 +4,7 @@ import EChartOption = echarts.EChartOption;
 import Chart from "../../echart/Chart";
 import SocketBuffer from "../../socket/SocketBuffer";
 import useSocketBuffer from "../../socket/useSocketBuffer";
-import {ServerFrame} from "../../types";
+import {ServerDataFrame, ServerHeaderFrame} from "../../types";
 import {SocketBufferContext} from "../../context";
 
 const option: EChartOption = {
@@ -76,19 +76,17 @@ interface ChartState {
   error?: string;
 }
 
-// function useHeader(sbf: SocketBufferState): string[] {
-//   const [header, setHeader] = useState<string[]>();
-//   const bufferHasHeader = sbf.buffer.length > 0;
+// function useChartState(socketBufferState: SocketBufferState<ServerFrame>): ChartState {
+//   if (!socketBufferState.header) {
+//     return {isLoading: true};
+//   }
 //
-//   useEffect(() => {
-//     if (bufferHasHeader) {
-//       setHeader()
-//     }
-//   }, [bufferHasHeader])
+//   const dataSetHeader = ["Time", ...socketBufferState.header];
+//   const dataSet = socketBufferState.data.map(data => [data.Time])
 // }
 
 function MainPage() {
-  const socketBufferState = useSocketBuffer<ServerFrame>("ws://localhost:8081/ws");
+  const socketBufferState = useSocketBuffer<ServerHeaderFrame, ServerDataFrame>("ws://localhost:8081/ws");
 
   return (
     <SocketBufferContext.Provider value={socketBufferState}>
