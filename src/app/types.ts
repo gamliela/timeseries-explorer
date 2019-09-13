@@ -1,4 +1,4 @@
 type ServerHeaderFrame = string[];
-type ServerDataFrame = { Time: string; Data: number[] }
+type ServerTickFrame = { Time: string; Error?: string; Values: number[] }
 
-export {ServerHeaderFrame, ServerDataFrame}
+export {ServerHeaderFrame, ServerTickFrame}

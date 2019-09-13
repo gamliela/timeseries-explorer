@@ -4,7 +4,7 @@ import EChartOption = echarts.EChartOption;
 import Chart from "../../echart/Chart";
 import SocketBuffer from "../../socket/SocketBuffer";
 import useSocketBuffer from "../../socket/useSocketBuffer";
-import {ServerDataFrame, ServerHeaderFrame} from "../../types";
+import {ServerTickFrame, ServerHeaderFrame} from "../../types";
 import {SocketBufferContext} from "../../context";
 import {SocketBufferState} from "../../socket/types";
 
@@ -101,13 +101,13 @@ function buildChartOption(dimensions: string[] = [],
   );
 }
 
-function calcChartState(socketBufferState: SocketBufferState<ServerHeaderFrame, ServerDataFrame>): ChartState {
+function calcChartState(socketBufferState: SocketBufferState<ServerHeaderFrame, ServerTickFrame>): ChartState {
   if (!socketBufferState.header) {
     return {isLoading: true, option: buildChartOption()};
   }
 
   const dimensions = ["Time", ...socketBufferState.header];
-  const source = socketBufferState.buffer.map(data => [data.Time, ...data.Data]);
+  const source = socketBufferState.buffer.map(data => [data.Time, ...data.Values]);
   const series = socketBufferState.header.map((name, index) => ({
     name,
     type: 'line',
@@ -124,7 +124,7 @@ function calcChartState(socketBufferState: SocketBufferState<ServerHeaderFrame, 
 }
 
 function MainPage() {
-  const socketBufferState = useSocketBuffer<ServerHeaderFrame, ServerDataFrame>("ws://localhost:8081/ws");
+  const socketBufferState = useSocketBuffer<ServerHeaderFrame, ServerTickFrame>("ws://localhost:8081/ws");
   const chartState = calcChartState(socketBufferState);
 
   return (
